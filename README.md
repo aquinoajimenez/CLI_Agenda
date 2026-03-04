@@ -105,7 +105,55 @@ docker-compose down
 
 ## Estructura del projecte
 
-_Descripció dels principals paquets i mòduls_
+agenda_cli/
+├── gitignore
+├── docker-compose.yml
+├── mongo-init.js
+├── pom.xml
+├── README.md
+└── src/
+    └── main/
+    │   └── java/
+    │      └── cli/
+    │         └── agenda/
+    │				├── Main.java
+    │				├── application/
+    │				│   ├── config/
+    │				│   └── menu/
+    │				├── common/	
+    │				│   ├── exception/
+    │				│   ├── mapper/
+    │				│   ├── repository/
+    │				│   └── utils/
+    │				├── tasks/
+    │				│   ├── dto/
+    │				│   ├── exception/
+    │				│   ├── mapper/
+    │				│   ├── model/
+    │				│   ├── repository/
+    │				│   ├── service/
+    │				│   └── cli/
+    │				├── note/
+    │				└── event/
+    │				└── infrastructure/	
+    │				├── mongo/
+    │				│	├── codecs/
+    │				│	└── repository/	
+    │				│		├── task/
+    │				│		├── note/
+    │				│		└── event/
+    │				└── config/
+    └── test/
+        └── java/
+            └── cli/
+                └── agenda/
+			├── task/
+			│   ├── service/
+			│   └── repository/
+			├── note/
+			│   └── service/
+			└── common/
+    				└── utils/
 
 ---
 
