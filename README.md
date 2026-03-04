@@ -157,6 +157,22 @@ agenda_cli/
 
 ---
 
+## Patrons de disseny implementats
+
+1. **Singleton**: garanteix una única instància de la connexió a la base de dades.
+
+
+---
+
+
+## Tests realitzats
+
+_Pendent de desenvolupar_
+
+
+
+---
+
 ## Autors
 
 Projecte desenvolupat per:
