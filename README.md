@@ -70,7 +70,21 @@ git clone https://github.com/aquinoajimenez/Project-Tasca-S3.04---Developers-Tea
 
 ### 2. Configurar la base de dades amb Docker
 
-_Pendents_
+Configurar la infraestructura de MongoDB mitjançant Docker per garantir un entorn local 
+unificat sense instal·lacions manuals.
+- El fitxer docker-compose.yml aixeca un contenidor amb MongoDB 6.0.
+- L'script mongo-init.js inicialitza la base de dades automàticament al primer inici.
+- La col·lecció users es configura amb validació estricta d'esquema i índexs únics per a 
+email i username.
+- La col·lecció tasks inclou validació d'esquema, enums per a priority i status, i una 
+referència a l'usuari.
+- Es creen automàticament un usuari de prova (Juan Garcia) i una tasca simulada per a 
+proves locals.
+
+Prova-ho localment:
+- Obrir la terminal a la carpeta arrel del projecte.
+- Executar docker compose up -d.
+- Verificar a Docker Desktop que el contenidor cli_agenda_mongo estigui en funcionament.
 
 ### 3. Compilar el projecte amb Maven
 mvn clean compile
