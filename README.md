@@ -148,7 +148,11 @@ agenda_cli/
     │				│   ├── model/
     │				│   ├── repository/
     │				│   ├── service/
+<<<<<<< Updated upstream
     │				│   └── cli/
+=======
+    │				│   └── cli/,. 
+>>>>>>> Stashed changes
     │				└── infrastructure/	
     │				├── mongo/
     │				│	├── codecs/
@@ -167,7 +171,11 @@ agenda_cli/
 			├── notes/
 			│   └── service/
 			│   └── repository/
+<<<<<<< Updated upstream
 			├── notes/
+=======
+			├── events/
+>>>>>>> Stashed changes
 			│   └── service/
 			│   └── repository/
 			└── common/
