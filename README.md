@@ -133,8 +133,22 @@ agenda_cli/
     │				│   ├── repository/
     │				│   ├── service/
     │				│   └── cli/
-    │				├── note/
-    │				└── event/
+    │				├── notes/
+    │				│   ├── dto/
+    │				│   ├── exception/
+    │				│   ├── mapper/
+    │				│   ├── model/
+    │				│   ├── repository/
+    │				│   ├── service/
+    │				│   └── cli/
+    │				└── events/
+    │				│   ├── dto/
+    │				│   ├── exception/
+    │				│   ├── mapper/
+    │				│   ├── model/
+    │				│   ├── repository/
+    │				│   ├── service/
+    │				│   └── cli/
     │				└── infrastructure/	
     │				├── mongo/
     │				│	├── codecs/
@@ -147,11 +161,15 @@ agenda_cli/
         └── java/
             └── cli/
                 └── agenda/
-			├── task/
+			├── tasks/
 			│   ├── service/
 			│   └── repository/
-			├── note/
+			├── notes/
 			│   └── service/
+			│   └── repository/
+			├── notes/
+			│   └── service/
+			│   └── repository/
 			└── common/
     				└── utils/
 
