@@ -1,7 +1,9 @@
-package cli.agenda.tasks.notes;
+package cli.agenda.tasks.notes.model;
+
+import org.bson.types.ObjectId;
 
 public class Note {
-    private Object id;
+    private ObjectId id;
     private String title;
     private String content;
 
@@ -14,9 +16,9 @@ public Object getId() {
         return id;
     }
 
-public void setId(Object id) {
+public void setId(ObjectId id) {
         this.id = id;
-    }
+}
 
 public String getTitle() {
         return title;
