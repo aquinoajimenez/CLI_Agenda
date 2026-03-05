@@ -1,36 +1,6 @@
 db = db.getSiblingDB('cli_agenda_db');
 
-// ==========================================
-// COLECCIÓN USERS
-// ==========================================
-db.createCollection("users", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["username", "password", "name", "surname", "email"],
-      properties: {
-        username: { bsonType: "string", minLength: 1, description: "Mandatory, non-empty string" },
-        password: { bsonType: "string", minLength: 1, description: "Mandatory, non-empty string" },
-        name: { bsonType: "string", minLength: 1, description: "Mandatory, non-empty string" },
-        surname: { bsonType: "string", minLength: 1, description: "Mandatory, non-empty string" },
-        email: { bsonType: "string", minLength: 1, description: "Mandatory, non-empty string" }
-      }
-    }
-  }
-});
-
-db.users.createIndex({ "username": 1 }, { unique: true });
-db.users.createIndex({ "email": 1 }, { unique: true });
-
-var testUser = db.users.insertOne({
-  username: "juanelgrande",
-  password: "passwd123",
-  name: "Juan",
-  surname: "Garcia",
-  email: "juan.garcia@cliagenda.com"
-});
-var userId = testUser.insertedId;
-
+db.dropDatabase();
 
 // ==========================================
 // COLECCIÓN TASKS
@@ -39,12 +9,8 @@ db.createCollection("tasks", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["user_id", "text", "priority", "status", "created_at"],
+      required: ["text", "priority", "status", "created_at"],
       properties: {
-        user_id: {
-          bsonType: "objectId",
-          description: "Mandatory user ID reference"
-        },
         text: {
           bsonType: "string",
           minLength: 1,
@@ -72,7 +38,6 @@ db.createCollection("tasks", {
 });
 
 db.tasks.insertOne({
-  user_id: userId,
   text: "Learn how to connect Java with MongoDB",
   due_date: new Date("2026-03-15T23:59:00Z"),
   priority: "HIGH",
@@ -80,6 +45,79 @@ db.tasks.insertOne({
   created_at: new Date()
 });
 
-db.tasks.createIndex({ "user_id": 1 });
+// ==========================================
+// COLECCIÓN: NOTES
+// ==========================================
+db.createCollection("notes", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["title", "created_at"],
+      properties: {
+        title: { bsonType: "string", minLength: 1, description: "Mandatory note title" },
+        content: { bsonType: "string", description: "Optional note content" },
+        category: {
+          enum: ["TRABAJO", "UNIVERSIDAD", "SOCIAL"],
+          description: "Optional category (TRABAJO, UNIVERSIDAD, SOCIAL)"
+        },
+        created_at: { bsonType: "date", description: "Mandatory creation date" },
+        updated_at: { bsonType: "date", description: "Optional last update date" }
+      }
+    }
+  }
+});
 
-print("✅ Base de datos CLI-Agenda inicializada con éxito (Users y Tasks blindados).");
+db.notes.insertOne({
+  title: "Ideas para el proyecto final",
+  content: "Recuerda aplicar el patrón DAO correctamente.",
+  category: "UNIVERSIDAD",
+  created_at: new Date(),
+  updated_at: new Date()
+});
+
+// ==========================================
+// COLECCIÓN: EVENTS
+// ==========================================
+db.createCollection("events", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["title", "start_date", "end_date", "created_at"],
+      properties: {
+        title: { bsonType: "string", minLength: 1, description: "Mandatory event title" },
+        description: { bsonType: "string", description: "Optional event description" },
+        start_date: { bsonType: "date", description: "Mandatory start date" },
+        end_date: { bsonType: "date", description: "Mandatory end date" },
+        location: { bsonType: "string", description: "Optional event location" },
+        created_at: { bsonType: "date", description: "Mandatory creation date" },
+        updated_at: { bsonType: "date", description: "Optional last update date" }
+      }
+    }
+  }
+});
+
+db.events.insertOne({
+  title: "Reunión de Sincronización (Daily)",
+  description: "Revisar los avances de la CLI Agenda con el equipo",
+  start_date: new Date("2026-03-06T10:00:00Z"),
+  end_date: new Date("2026-03-06T10:30:00Z"),
+  location: "Discord",
+  created_at: new Date(),
+  updated_at: new Date()
+});
+
+db.events.insertOne({
+  title: "Cena con amigos",
+  description: "Cumpleaños sorpresa",
+  start_date: new Date("2026-04-12T20:00:00Z"),
+  end_date: new Date("2026-04-12T23:59:59Z"),
+  location: "Restaurante centro",
+  created_at: new Date(),
+  updated_at: new Date()
+});
+
+db.tasks.createIndex({ "status": 1 });
+db.events.createIndex({ "start_date": 1 });
+db.notes.createIndex({ "category": 1 });
+
+print("✅ Base de datos CLI-Agenda inicializada con éxito.");
