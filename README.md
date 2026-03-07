@@ -187,7 +187,8 @@ agenda_cli/
 
 1. **Singleton**: garanteix una única instància de la connexió a la base de dades.
 2. **Builder**: en classe Task, permet crear instàncies amb múltiples paràmetres opcionals i valors per defecte.
-
+3. **Repository**: en TaskRepository interface i MongoTaskRepository, abstreu la capa de persistència, permetent canviar 
+   la base de dades sense afectar la capa de servei.
 
 ---
 
