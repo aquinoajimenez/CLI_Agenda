@@ -186,6 +186,7 @@ agenda_cli/
 ## Patrons de disseny implementats
 
 1. **Singleton**: garanteix una única instància de la connexió a la base de dades.
+2. **Builder**: en classe Task, permet crear instàncies amb múltiples paràmetres opcionals i valors per defecte.
 
 
 ---
