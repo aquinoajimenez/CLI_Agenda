@@ -1,3 +1,16 @@
+// === ESPERAR A QUE MONGODB ESTÉ LISTO ===
+sleep(5000); // Espera 5 segundos
+
+// === AUTENTICACIÓN ===
+db = db.getSiblingDB('admin');
+var authResult = db.auth('root', 'rootpassword');
+print("Autenticación: " + (authResult ? "OK" : "FALLÓ"));
+
+if (!authResult) {
+  print("❌ No se pudo autenticar. Abortando inicialización.");
+  quit(1);
+}
+
 db = db.getSiblingDB('cli_agenda_db');
 
 db.dropDatabase();
