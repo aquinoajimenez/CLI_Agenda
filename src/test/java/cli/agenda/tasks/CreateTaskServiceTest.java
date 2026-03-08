@@ -1,12 +1,10 @@
-package cli.agenda.tasks;
+package cli.agenda.tasks.service;
 
 import cli.agenda.tasks.dto.CreateTaskRequest;
 import cli.agenda.tasks.dto.TaskResponse;
 import cli.agenda.tasks.model.Priority;
-import cli.agenda.tasks.model.Status;
 import cli.agenda.tasks.model.Task;
 import cli.agenda.tasks.repository.TaskRepository;
-import cli.agenda.tasks.service.CreateTaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,50 +28,50 @@ class CreateTaskServiceTest {
     }
 
     @Test
-    @DisplayName("Happy Path: Create a task with all fields filled")
+    @DisplayName("Happy Path: Crear una tasca amb tots els camps omplerts")
     void testCreateTaskWithAllFields() {
         LocalDateTime dueDate = LocalDateTime.of(2026, 12, 31, 23, 59);
         CreateTaskRequest request = new CreateTaskRequest(
-                "Buy milk",
+                "Comprar llet",
                 dueDate,
                 Priority.HIGH
         );
 
         TaskResponse response = createTaskService.createTask(request);
 
-        assertNotNull(response, "Response should not be null");
-        assertNotNull(response.getId(), "ID should not be null");
-        assertEquals("Buy milk", response.getText(), "Text should match");
-        assertEquals(dueDate, response.getDueDate(), "Due date should match");
-        assertEquals(Priority.HIGH, response.getPriority(), "Priority should be HIGH");
-        assertNotNull(response.getCreatedAt(), "Creation date should not be null");
+        assertNotNull(response, "La resposta no hauria de ser null");
+        assertNotNull(response.getId(), "L'ID no hauria de ser null");
+        assertEquals("Comprar llet", response.getText(), "El text hauria de coincidir");
+        assertEquals(dueDate, response.getDueDate(), "La data hauria de coincidir");
+        assertEquals(Priority.HIGH, response.getPriority(), "La prioritat hauria de ser HIGH");
+        assertNotNull(response.getCreatedAt(), "La data de creació no hauria de ser null");
     }
 
     @Test
-    @DisplayName("Happy Path: Create a task with only required fields")
+    @DisplayName("Happy Path: Crear una tasca només amb el text obligatori")
     void testCreateTaskWithOnlyRequiredFields() {
         CreateTaskRequest request = new CreateTaskRequest(
-                "Team meeting",
-                null,
-                null
+                "Reunió d'equip",
+                null,  // dueDate opcional
+                null   // priority opcional (hauria d'agafar MEDIUM per defecte)
         );
 
         TaskResponse response = createTaskService.createTask(request);
 
-        assertNotNull(response, "Response should not be null");
-        assertEquals("Team meeting", response.getText(), "Text should match");
-        assertNull(response.getDueDate(), "Due date should be null");
+        assertNotNull(response, "La resposta no hauria de ser null");
+        assertEquals("Reunió d'equip", response.getText(), "El text hauria de coincidir");
+        assertNull(response.getDueDate(), "La data hauria de ser null");
         assertEquals(Priority.MEDIUM, response.getPriority(),
-                "Priority should default to MEDIUM");
-        assertNotNull(response.getCreatedAt(), "Creation date should not be null");
+                "La prioritat hauria de ser MEDIUM per defecte");
+        assertNotNull(response.getCreatedAt(), "La data de creació no hauria de ser null");
     }
 
     @Test
-    @DisplayName("Happy Path: Create multiple tasks and verify unique IDs")
+    @DisplayName("Happy Path: Crear múltiples tasques i verificar IDs únics")
     void testCreateMultipleTasks() {
-        CreateTaskRequest request1 = new CreateTaskRequest("Task 1", null, Priority.LOW);
-        CreateTaskRequest request2 = new CreateTaskRequest("Task 2", null, Priority.MEDIUM);
-        CreateTaskRequest request3 = new CreateTaskRequest("Task 3", null, Priority.HIGH);
+        CreateTaskRequest request1 = new CreateTaskRequest("Tasca 1", null, Priority.LOW);
+        CreateTaskRequest request2 = new CreateTaskRequest("Tasca 2", null, Priority.MEDIUM);
+        CreateTaskRequest request3 = new CreateTaskRequest("Tasca 3", null, Priority.HIGH);
 
         TaskResponse response1 = createTaskService.createTask(request1);
         TaskResponse response2 = createTaskService.createTask(request2);
@@ -85,18 +82,18 @@ class CreateTaskServiceTest {
         assertNotNull(response3.getId());
 
         assertNotEquals(response1.getId(), response2.getId(),
-                "Tasks should have different IDs");
+                "Les tasques haurien de tenir IDs diferents");
         assertNotEquals(response1.getId(), response3.getId(),
-                "Tasks should have different IDs");
+                "Les tasques haurien de tenir IDs diferents");
         assertNotEquals(response2.getId(), response3.getId(),
-                "Tasks should have different IDs");
+                "Les tasques haurien de tenir IDs diferents");
     }
 
     @Test
-    @DisplayName("Happy Path: Verify task is properly saved in repository")
+    @DisplayName("Happy Path: Verificar que la tasca es guarda correctament al repositori")
     void testTaskIsSavedInRepository() {
         CreateTaskRequest request = new CreateTaskRequest(
-                "Task to verify",
+                "Tasca per verificar",
                 LocalDateTime.now(),
                 Priority.MEDIUM
         );
@@ -105,11 +102,11 @@ class CreateTaskServiceTest {
 
         Optional<Task> foundTask = taskRepository.findById(response.getId());
 
-        assertTrue(foundTask.isPresent(), "Task should exist in repository");
+        assertTrue(foundTask.isPresent(), "La tasca hauria d'existir al repositori");
         assertEquals(response.getText(), foundTask.get().getText(),
-                "Text should match");
+                "El text hauria de coincidir");
         assertEquals(response.getPriority(), foundTask.get().getPriority(),
-                "Priority should match");
+                "La prioritat hauria de coincidir");
     }
 
     private static class InMemoryTaskRepository implements TaskRepository {
@@ -136,13 +133,6 @@ class CreateTaskServiceTest {
         @Override
         public boolean deleteById(String id) {
             return tasks.removeIf(task -> task.getId().equals(id));
-        }
-
-        @Override
-        public List<Task> findByStatus(Status status) {
-            return tasks.stream()
-                    .filter(task -> task.getStatus() == status)
-                    .collect(Collectors.toList());
         }
     }
 }
