@@ -3,8 +3,12 @@ package cli.agenda;
 import cli.agenda.infrastructure.repository.tasks.MongoTaskRepository;
 import cli.agenda.tasks.cli.CreateTaskCli;
 import cli.agenda.tasks.cli.ListPendingTasksCli;
+import cli.agenda.tasks.cli.ListCompletedTasksCli;
+import cli.agenda.tasks.cli.ListAllTasksCli;
 import cli.agenda.tasks.service.CreateTaskService;
 import cli.agenda.tasks.service.ListPendingTasksService;
+import cli.agenda.tasks.service.ListCompletedTasksService;
+import cli.agenda.tasks.service.ListAllTasksService;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
@@ -84,7 +88,17 @@ public class Main {
             var listPendingTasksService = new ListPendingTasksService(taskRepository);
             var listPendingTasksCli = new ListPendingTasksCli(listPendingTasksService);
 
-            showMainMenu(scanner, createTaskCli, listPendingTasksCli);
+            var listCompletedTasksService = new ListCompletedTasksService(taskRepository);
+            var listCompletedTasksCli = new ListCompletedTasksCli(listCompletedTasksService);
+
+            var listAllTasksService = new ListAllTasksService(taskRepository);
+            var listAllTasksCli = new ListAllTasksCli(listAllTasksService);
+
+            showMainMenu(scanner,
+                    createTaskCli,
+                    listPendingTasksCli,
+                    listCompletedTasksCli,
+                    listAllTasksCli);
 
         } catch (Exception e) {
             System.err.println("❌ General error: " + e.getMessage());
@@ -94,14 +108,16 @@ public class Main {
 
     private static void showMainMenu(Scanner scanner,
                                      CreateTaskCli createTaskCli,
-                                     ListPendingTasksCli listPendingTasksCli) {
+                                     ListPendingTasksCli listPendingTasksCli,
+                                     ListCompletedTasksCli listCompletedTasksCli,
+                                     ListAllTasksCli listAllTasksCli) {
         while (true) {
-            System.out.println("\n=== AGENDA CLI ===");
-            System.out.println("1. Create task");
-            System.out.println("2. List PENDING tasks");
-            System.out.println("3. List COMPLETED tasks (coming soon)");
-            System.out.println("4. List ALL tasks (coming soon)");
-            System.out.println("5. Exit");
+            System.out.println("\n=== 📋 AGENDA CLI 📋 ===");
+            System.out.println("1. ➕ Create task");
+            System.out.println("2. 📌 List PENDING tasks");
+            System.out.println("3. ✅ List COMPLETED tasks");
+            System.out.println("4. 📚 List ALL tasks");
+            System.out.println("5. 🚪 Exit");
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine().trim();
@@ -114,10 +130,10 @@ public class Main {
                     listPendingTasksCli.start();
                     break;
                 case "3":
-                    System.out.println("🚧 Feature under construction...");
+                    listCompletedTasksCli.start();
                     break;
                 case "4":
-                    System.out.println("🚧 Feature under construction...");
+                    listAllTasksCli.start();
                     break;
                 case "5":
                     System.out.println("👋 Goodbye!");
