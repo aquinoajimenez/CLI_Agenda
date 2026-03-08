@@ -2,7 +2,7 @@ package cli.agenda;
 
 import cli.agenda.infrastructure.repository.tasks.MongoTaskRepository;
 import cli.agenda.tasks.cli.CreateTaskCli;
-import cli.agenda.tasks.service.CreateTaskService;
+import cli.agenda.tasks.CreateTaskService;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
