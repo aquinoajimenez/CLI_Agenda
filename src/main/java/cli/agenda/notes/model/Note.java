@@ -1,4 +1,4 @@
-package cli.agenda.tasks.notes.model;
+package cli.agenda.notes.model;
 
 import org.bson.types.ObjectId;
 

@@ -1,8 +1,8 @@
-package cli.agenda.tasks.notes.mapper;
+package cli.agenda.notes.mapper;
 
-import cli.agenda.tasks.notes.dto.NoteCreateDTO;
-import cli.agenda.tasks.notes.dto.NoteResponseDTO;
-import cli.agenda.tasks.notes.model.Note;
+import cli.agenda.notes.dto.NoteCreateDTO;
+import cli.agenda.notes.dto.NoteResponseDTO;
+import cli.agenda.notes.model.Note;
 
 public class NoteMapper {
 

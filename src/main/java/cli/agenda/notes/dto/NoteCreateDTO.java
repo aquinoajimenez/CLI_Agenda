@@ -1,4 +1,4 @@
-package cli.agenda.tasks.notes.dto;
+package cli.agenda.notes.dto;
 
 public class NoteCreateDTO {
 
