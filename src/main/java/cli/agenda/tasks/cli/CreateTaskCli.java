@@ -4,7 +4,7 @@ import cli.agenda.tasks.dto.CreateTaskRequest;
 import cli.agenda.tasks.dto.TaskResponse;
 import cli.agenda.tasks.exception.TaskValidationException;
 import cli.agenda.tasks.model.Priority;
-import cli.agenda.tasks.CreateTaskService;
+import cli.agenda.tasks.service.CreateTaskService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
