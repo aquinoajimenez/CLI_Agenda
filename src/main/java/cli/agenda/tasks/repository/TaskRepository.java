@@ -1,6 +1,7 @@
 package cli.agenda.tasks.repository;
 
 import cli.agenda.tasks.model.Task;
+import cli.agenda.tasks.model.Status;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +14,6 @@ public interface TaskRepository {
     List<Task> findAll();
 
     boolean deleteById(String id);
+
+    List<Task> findByStatus(Status status);
 }

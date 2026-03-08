@@ -128,4 +128,21 @@ public class MongoTaskRepository implements TaskRepository {
                 .createdAt(createdAt.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
                 .build();
     }
+
+    @Override
+    public List<Task> findByStatus(Status status) {
+        System.out.println("🔍 Buscant tasques amb estat: " + status);
+        List<Task> tasks = new ArrayList<>();
+
+        try {
+            collection.find(Filters.eq("status", status.name()))
+                    .forEach(doc -> tasks.add(documentToTask(doc)));
+
+            System.out.println("✅ Trobades " + tasks.size() + " tasques amb estat " + status);
+        } catch (Exception e) {
+            System.err.println("❌ Error cercant per estat: " + e.getMessage());
+        }
+        return tasks;
+    }
+
 }

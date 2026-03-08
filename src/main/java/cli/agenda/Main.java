@@ -2,7 +2,9 @@ package cli.agenda;
 
 import cli.agenda.infrastructure.repository.tasks.MongoTaskRepository;
 import cli.agenda.tasks.cli.CreateTaskCli;
-import cli.agenda.tasks.CreateTaskService;
+import cli.agenda.tasks.cli.ListPendingTasksCli;
+import cli.agenda.tasks.service.CreateTaskService;
+import cli.agenda.tasks.service.ListPendingTasksService;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
@@ -15,93 +17,92 @@ public class Main {
 
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
-            // 🔥 CONNEXIÓ A MONGODB
             String connectionString = "mongodb://localhost:27017/cli_agenda_db";
 
-            System.out.println("🔄 Connectant a MongoDB: " + connectionString);
+            System.out.println("🔄 Connecting to MongoDB: " + connectionString);
             var mongoClient = MongoClients.create(connectionString);
             MongoDatabase database = mongoClient.getDatabase("cli_agenda_db");
 
-            System.out.println("✅ Connexió a MongoDB establerta!");
-            System.out.println("📊 Base de dades: " + database.getName());
+            System.out.println("✅ MongoDB connection established!");
+            System.out.println("📊 Database: " + database.getName());
 
-            // 🔍 VERIFICACIÓ DE CONNEXIÓ I PERMISOS D'ESCRIPTURA
-            System.out.println("\n🔍 INICIANT VERIFICACIÓ DE CONNEXIÓ...");
+            System.out.println("\n🔍 STARTING CONNECTION VERIFICATION...");
             try {
-                // Prova 1: Ping a la base de dades
                 Document pingResult = database.runCommand(new Document("ping", 1));
-                System.out.println("✅ Ping a MongoDB: " + pingResult.toJson());
+                System.out.println("✅ MongoDB ping: " + pingResult.toJson());
 
-                // Prova 2: Inserir un document de prova
                 MongoCollection<Document> testColl = database.getCollection("test_connection");
                 String testId = "test-" + System.currentTimeMillis();
                 Document testDoc = new Document("_id", testId)
                         .append("test", "connection")
                         .append("timestamp", System.currentTimeMillis());
 
-                System.out.println("📝 Intentant inserir document de prova...");
+                System.out.println("📝 Attempting to insert test document...");
                 testColl.insertOne(testDoc);
-                System.out.println("✅ Document de prova insertat amb ID: " + testId);
+                System.out.println("✅ Test document inserted with ID: " + testId);
 
-                // Prova 3: Llegir el document de prova
                 Document readTest = testColl.find(new Document("_id", testId)).first();
                 if (readTest != null) {
-                    System.out.println("✅ Document de prova llegit correctament: " + readTest.toJson());
+                    System.out.println("✅ Test document read successfully: " + readTest.toJson());
                 } else {
-                    System.err.println("❌ No s'ha pogut llegir el document de prova!");
+                    System.err.println("❌ Could not read test document!");
                 }
 
-                // Prova 4: Comptar documents a la col·lecció tasks (si existeix)
                 try {
                     long taskCount = database.getCollection("tasks").countDocuments();
-                    System.out.println("📊 Tasques actuals a la BD: " + taskCount);
+                    System.out.println("📊 Current tasks in DB: " + taskCount);
                 } catch (Exception e) {
-                    System.out.println("ℹ️ La col·lecció 'tasks' encara no existeix");
+                    System.out.println("ℹ️ Collection 'tasks' does not exist yet");
                 }
 
-                // Prova 5: Llistar totes les col·leccions
-                System.out.println("📚 Col·leccions disponibles:");
+                System.out.println("📚 Available collections:");
                 database.listCollectionNames().forEach(coll -> System.out.println("  - " + coll));
 
-                // Neteja: eliminar el document de prova
                 testColl.deleteOne(new Document("_id", testId));
-                System.out.println("✅ Neteja completada (document de prova eliminat)");
+                System.out.println("✅ Cleanup completed (test document deleted)");
 
             } catch (MongoException e) {
-                System.err.println("❌ Error de MongoDB: " + e.getMessage());
+                System.err.println("❌ MongoDB error: " + e.getMessage());
                 e.printStackTrace();
-                System.err.println("🚨 L'aplicació no pot continuar sense connexió a MongoDB");
+                System.err.println("🚨 Application cannot continue without MongoDB connection");
                 return;
             } catch (Exception e) {
-                System.err.println("❌ Error inesperat: " + e.getMessage());
+                System.err.println("❌ Unexpected error: " + e.getMessage());
                 e.printStackTrace();
-                System.err.println("🚨 L'aplicació no pot continuar sense connexió a MongoDB");
+                System.err.println("🚨 Application cannot continue without MongoDB connection");
                 return;
             }
 
-            System.out.println("\n✅ TOTES LES VERIFICACIONS HAN ESTAT EXITOSES!");
-            System.out.println("🚀 Iniciant l'aplicació...\n");
+            System.out.println("\n✅ ALL VERIFICATIONS SUCCESSFUL!");
+            System.out.println("🚀 Starting application...\n");
 
-            // Inicialitzar repositori i serveis
             var taskRepository = new MongoTaskRepository(database);
+
             var createTaskService = new CreateTaskService(taskRepository);
             var createTaskCli = new CreateTaskCli(createTaskService, scanner);
 
-            showMainMenu(scanner, createTaskCli);
+            var listPendingTasksService = new ListPendingTasksService(taskRepository);
+            var listPendingTasksCli = new ListPendingTasksCli(listPendingTasksService);
+
+            showMainMenu(scanner, createTaskCli, listPendingTasksCli);
 
         } catch (Exception e) {
-            System.err.println("❌ Error general: " + e.getMessage());
+            System.err.println("❌ General error: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private static void showMainMenu(Scanner scanner, CreateTaskCli createTaskCli) {
+    private static void showMainMenu(Scanner scanner,
+                                     CreateTaskCli createTaskCli,
+                                     ListPendingTasksCli listPendingTasksCli) {
         while (true) {
             System.out.println("\n=== AGENDA CLI ===");
-            System.out.println("1. Create Task");
-            System.out.println("2. List Tasks");
-            System.out.println("3. Exit");
-            System.out.print("Choice: ");
+            System.out.println("1. Create task");
+            System.out.println("2. List PENDING tasks");
+            System.out.println("3. List COMPLETED tasks (coming soon)");
+            System.out.println("4. List ALL tasks (coming soon)");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine().trim();
 
@@ -110,13 +111,19 @@ public class Main {
                     createTaskCli.start();
                     break;
                 case "2":
-                    System.out.println("List tasks - Coming soon!");
+                    listPendingTasksCli.start();
                     break;
                 case "3":
-                    System.out.println("Goodbye!");
+                    System.out.println("🚧 Feature under construction...");
+                    break;
+                case "4":
+                    System.out.println("🚧 Feature under construction...");
+                    break;
+                case "5":
+                    System.out.println("👋 Goodbye!");
                     return;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("❌ Invalid option. Choose 1-5.");
             }
         }
     }
