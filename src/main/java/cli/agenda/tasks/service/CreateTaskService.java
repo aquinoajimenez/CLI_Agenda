@@ -2,7 +2,7 @@ package cli.agenda.tasks.service;
 
 import cli.agenda.tasks.dto.CreateTaskRequest;
 import cli.agenda.tasks.dto.TaskResponse;
-import cli.agenda.tasks.exception.TaskValidationException;  // ← IMPORT QUE FALTA
+import cli.agenda.tasks.exception.TaskValidationException;
 import cli.agenda.tasks.mapper.TaskMapper;
 import cli.agenda.tasks.model.Task;
 import cli.agenda.tasks.repository.TaskRepository;
@@ -18,13 +18,32 @@ public class CreateTaskService {
     }
 
     public TaskResponse createTask(CreateTaskRequest request) {
+        System.out.println("🚀 Iniciant creació de tasca...");
+
         validateRequest(request);
+        System.out.println("✅ Validació superada");
 
         Task task = TaskMapper.toEntity(request);
+        System.out.println("✅ Task entity creada amb ID: " + task.getId());
+        System.out.println("📝 Text: " + task.getText());
+        System.out.println("📅 DueDate: " + task.getDueDate());
+        System.out.println("🎯 Priority: " + task.getPriority());
+        System.out.println("⏱️ CreatedAt: " + task.getCreatedAt());
 
-        Task savedTask = taskRepository.save(task);
+        try {
+            Task savedTask = taskRepository.save(task);
+            System.out.println("✅ Task guardada al repositori");
 
-        return TaskMapper.toResponse(savedTask);
+            TaskResponse response = TaskMapper.toResponse(savedTask);
+            System.out.println("✅ Response generada: " + response);
+
+            return response;
+
+        } catch (Exception e) {
+            System.err.println("❌ Error en guardar: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private void validateRequest(CreateTaskRequest request) {
