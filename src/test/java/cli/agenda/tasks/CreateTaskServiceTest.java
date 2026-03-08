@@ -1,4 +1,4 @@
-package cli.agenda.tasks.service;
+package cli.agenda.tasks;
 
 import cli.agenda.tasks.dto.CreateTaskRequest;
 import cli.agenda.tasks.dto.TaskResponse;
