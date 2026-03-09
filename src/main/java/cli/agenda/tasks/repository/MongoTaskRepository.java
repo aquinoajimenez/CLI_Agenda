@@ -1,9 +1,8 @@
-package cli.agenda.infrastructure.repository.tasks;
+package cli.agenda.tasks.repository;
 
 import cli.agenda.tasks.model.Priority;
 import cli.agenda.tasks.model.Status;
 import cli.agenda.tasks.model.Task;
-import cli.agenda.tasks.repository.TaskRepository;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
