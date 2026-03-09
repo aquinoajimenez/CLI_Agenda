@@ -1,10 +1,10 @@
 package cli.agenda;
 
-import cli.agenda.infrastructure.repository.tasks.MongoTaskRepository;
 import cli.agenda.tasks.cli.CreateTaskCli;
 import cli.agenda.tasks.cli.ListPendingTasksCli;
 import cli.agenda.tasks.cli.ListCompletedTasksCli;
 import cli.agenda.tasks.cli.ListAllTasksCli;
+import cli.agenda.tasks.repository.MongoTaskRepository;
 import cli.agenda.tasks.service.CreateTaskService;
 import cli.agenda.tasks.service.ListPendingTasksService;
 import cli.agenda.tasks.service.ListCompletedTasksService;
