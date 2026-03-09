@@ -1,7 +1,6 @@
-package cli.agenda.infrastructure.mongo.repository.note;
+package cli.agenda.notes.repository;
 
 import cli.agenda.notes.model.Note;
-import cli.agenda.notes.repository.NoteRepository;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
