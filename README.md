@@ -133,8 +133,22 @@ agenda_cli/
     │				│   ├── repository/
     │				│   ├── service/
     │				│   └── cli/
-    │				├── note/
-    │				└── event/
+    │				├── notes/
+    │				│   ├── dto/
+    │				│   ├── exception/
+    │				│   ├── mapper/
+    │				│   ├── model/
+    │				│   ├── repository/
+    │				│   ├── service/
+    │				│   └── cli/
+    │				└── events/
+    │				│   ├── dto/
+    │				│   ├── exception/
+    │				│   ├── mapper/
+    │				│   ├── model/
+    │				│   ├── repository/
+    │				│   ├── service/
+    │				│   └── cli/
     │				└── infrastructure/	
     │				├── mongo/
     │				│	├── codecs/
@@ -147,20 +161,52 @@ agenda_cli/
         └── java/
             └── cli/
                 └── agenda/
-			├── task/
+			├── tasks/
 			│   ├── service/
 			│   └── repository/
-			├── note/
+			├── notes/
 			│   └── service/
+			│   └── repository/
+			├── notes/
+			│   └── service/
+			│   └── repository/
 			└── common/
     				└── utils/
+
+---
+
+### 6. Estructura de Coleccions
+
+text (String - required)
+due_date (Date - optional)
+priority (ENUM ["LOW", "MEDIUM", "HIGH"] - required)
+status (ENUM ["PENDING", "COMPLETED"] - required)
+created_at (Date - required)
+Colección Notes:
+
+title (String - required)
+content (String - optional)
+category (ENUM ["TRABAJO", "UNIVERSIDAD", "SOCIAL"] - optional)
+created_at (Date - required)
+updated_at (Date - optional)
+Colección Events:
+
+title (String - required)
+description (String - optional)
+start_date (Date - required)
+end_date (Date - required)
+location (String - optional)
+created_at (Date - required)
+updated_at (Date - optional)
 
 ---
 
 ## Patrons de disseny implementats
 
 1. **Singleton**: garanteix una única instància de la connexió a la base de dades.
-
+2. **Builder**: en classe Task, permet crear instàncies amb múltiples paràmetres opcionals i valors per defecte.
+3. **Repository**: en TaskRepository interface i MongoTaskRepository, abstreu la capa de persistència, permetent canviar 
+   la base de dades sense afectar la capa de servei.
 
 ---
 
