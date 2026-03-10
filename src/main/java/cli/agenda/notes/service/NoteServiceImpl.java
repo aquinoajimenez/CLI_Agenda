@@ -6,6 +6,9 @@ import cli.agenda.notes.mapper.NoteMapper;
 import cli.agenda.notes.model.Note;
 import cli.agenda.notes.repository.NoteRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NoteServiceImpl implements NoteService {
 
     private final NoteRepository noteRepository;
@@ -19,5 +22,15 @@ public class NoteServiceImpl implements NoteService {
         Note note = NoteMapper.toNote(dto);
         Note saved = noteRepository.save(note);
         return NoteMapper.toResponseDTO(saved);
+    }
+
+    @Override
+    public List<NoteResponseDTO> findAll() {
+        List<Note> notes = noteRepository.findAll();
+        List<NoteResponseDTO> result = new ArrayList<>();
+        for (Note note : notes) {
+            result.add(NoteMapper.toResponseDTO(note));
+        }
+        return result;
     }
 }
