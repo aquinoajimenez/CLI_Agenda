@@ -9,14 +9,17 @@ public class NoteMapper {
     private NoteMapper() {}
 
     public static Note toNote(NoteCreateDTO dto) {
-        return new Note(dto.getTitle(), dto.getContent());
+        return new Note(dto.getTitle(), dto.getContent(), dto.getCategory());
     }
 
     public static NoteResponseDTO toResponseDTO(Note note) {
         return new NoteResponseDTO(
                 note.getId().toString(),
                 note.getTitle(),
-                note.getContent()
+                note.getContent(),
+                note.getCategory(),
+                note.getCreatedAt(),
+                note.getUpdatedAt()
         );
     }
 }
