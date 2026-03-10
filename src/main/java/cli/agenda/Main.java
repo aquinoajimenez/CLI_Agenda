@@ -1,11 +1,13 @@
 package cli.agenda;
 
 import cli.agenda.infrastructure.database.DatabaseConnection;
+import cli.agenda.tasks.dao.mongodb.MongoDBTaskDAO;
 import cli.agenda.tasks.repository.MongoTaskRepository;
 import cli.agenda.tasks.cli.CreateTaskCli;
 import cli.agenda.tasks.cli.ListPendingTasksCli;
 import cli.agenda.tasks.cli.ListCompletedTasksCli;
 import cli.agenda.tasks.cli.ListAllTasksCli;
+import cli.agenda.tasks.repository.impl.TaskRepositoryImpl;
 import cli.agenda.tasks.service.CreateTaskService;
 import cli.agenda.tasks.service.ListPendingTasksService;
 import cli.agenda.tasks.service.ListCompletedTasksService;
@@ -17,7 +19,6 @@ public class Main {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
 
-            // 🔥 Obtenir connexió a MongoDB via Singleton
             var database = DatabaseConnection.INSTANCE.getDatabase();
 
             if (database == null) {
@@ -25,8 +26,8 @@ public class Main {
                 return;
             }
 
-            // Inicialitzar repositori i serveis
-            var taskRepository = new MongoTaskRepository(database);
+            var taskDAO = new MongoDBTaskDAO(database);
+            var taskRepository = new TaskRepositoryImpl(taskDAO);
 
             var createTaskService = new CreateTaskService(taskRepository);
             var createTaskCli = new CreateTaskCli(createTaskService, scanner);
@@ -83,8 +84,6 @@ public class Main {
                     break;
                 case "5":
                     System.out.println("👋 Goodbye!");
-                    // 🔥 Opció 2: NO cridem a close() perquè no existeix
-                    // DatabaseConnection.INSTANCE.close();  // ← Comentat/eliminat
                     return;
                 default:
                     System.out.println("❌ Invalid option. Choose 1-5.");
