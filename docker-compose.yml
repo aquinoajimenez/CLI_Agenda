@@ -3,10 +3,6 @@ services:
     image: mongo:6.0
     container_name: cli_agenda_mongo
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
-      MONGO_INITDB_DATABASE: cli_agenda_db
     ports:
       - "27017:27017"
     volumes:
