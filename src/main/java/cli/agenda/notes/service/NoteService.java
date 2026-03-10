@@ -10,4 +10,8 @@ public interface NoteService {
     NoteResponseDTO createNote(NoteCreateDTO dto);
 
     List<NoteResponseDTO> findAll();
+
+    NoteResponseDTO update(String id, NoteCreateDTO dto);
+
+    NoteResponseDTO findById(String id);
 }
