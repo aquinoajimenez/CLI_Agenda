@@ -33,4 +33,19 @@ public class NoteServiceImpl implements NoteService {
         }
         return result;
     }
+
+    @Override
+    public NoteResponseDTO update(String id, NoteCreateDTO dto) {
+        Note updated = noteRepository.update(id, dto);
+        return NoteMapper.toResponseDTO(updated);
+    }
+
+    @Override
+    public NoteResponseDTO findById(String id) {
+        Note note = noteRepository.findById(id);
+        if (note == null) {
+            return null;
+        }
+        return NoteMapper.toResponseDTO(note);
+    }
 }
