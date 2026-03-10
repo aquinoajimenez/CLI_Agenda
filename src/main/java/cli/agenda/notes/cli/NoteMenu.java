@@ -5,6 +5,7 @@ import cli.agenda.notes.dto.NoteResponseDTO;
 import cli.agenda.notes.model.NoteCategory;
 import cli.agenda.notes.service.NoteService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class NoteMenu {
@@ -18,6 +19,22 @@ public class NoteMenu {
     }
 
     public void show() {
+        System.out.println("\n===== NOTES MENU =====");
+        System.out.println("1. Create note");
+        System.out.println("2. List all notes");
+        System.out.println("0. Exit");
+        System.out.print("Select: ");
+        String option = scanner.nextLine().trim();
+
+        switch (option) {
+            case "1" -> createNote();
+            case "2" -> listAllNotes();
+            case "0" -> System.out.println("Goodbye!");
+            default -> System.out.println("Invalid option.");
+        }
+    }
+
+    private void createNote() {
         System.out.print("Title: ");
         String title = scanner.nextLine().trim();
 
@@ -46,5 +63,21 @@ public class NoteMenu {
         System.out.println("Content: " + response.getContent());
         System.out.println("Category: " + response.getCategory());
         System.out.println("Created at: " + response.getCreatedAt());
+    }
+
+    private void listAllNotes() {
+        List<NoteResponseDTO> notes = noteService.findAll();
+        if (notes.isEmpty()) {
+            System.out.println("No notes found.");
+            return;
+        }
+        System.out.println("\n--- All Notes ---");
+        for (NoteResponseDTO note : notes) {
+            System.out.println("ID: " + note.getId());
+            System.out.println("Title: " + note.getTitle());
+            System.out.println("Content: " + note.getContent());
+            System.out.println("Category: " + note.getCategory());
+            System.out.println("-------------------------");
+        }
     }
 }

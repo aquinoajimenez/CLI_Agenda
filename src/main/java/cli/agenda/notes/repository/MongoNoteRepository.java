@@ -1,12 +1,15 @@
 package cli.agenda.notes.repository;
 
 import cli.agenda.notes.model.Note;
+import cli.agenda.notes.model.NoteCategory;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MongoNoteRepository implements NoteRepository {
 
@@ -27,6 +30,31 @@ public class MongoNoteRepository implements NoteRepository {
 
         collection.insertOne(doc);
         note.setId(doc.getObjectId("_id"));
+        return note;
+    }
+
+    @Override
+    public List<Note> findAll() {
+        List<Note> notes = new ArrayList<>();
+        for (Document doc : collection.find()) {
+            notes.add(fromDocument(doc));
+        }
+        return notes;
+    }
+
+    private Note fromDocument(Document doc) {
+        Note note = new Note(
+                doc.getString("title"),
+                doc.getString("content"),
+                null
+        );
+
+        note.setId(doc.getObjectId("_id"));
+
+        String category = doc.getString("category");
+        if (category != null) {
+            note.setCategory(NoteCategory.valueOf(category));
+        }
         return note;
     }
 }
