@@ -83,8 +83,10 @@ public class MongoDBTaskDAO implements TaskDAO {
             if (task.getDueDate() != null) {
                 Date dueDate = Date.from(task.getDueDate().atZone(ZoneId.systemDefault()).toInstant());
                 updates.add(Updates.set("due_date", dueDate));
+                System.out.println("   Setting due_date to: " + dueDate);
             } else {
                 updates.add(Updates.unset("due_date"));
+                System.out.println("   Removing due_date field");
             }
 
             Bson update = Updates.combine(updates);
@@ -95,10 +97,13 @@ public class MongoDBTaskDAO implements TaskDAO {
                     .updateOne(filter, update, options);
 
             if (result.wasAcknowledged()) {
-                System.out.println("✅ DAO: Update acknowledged, modified: " + result.getModifiedCount());
-                return result.getModifiedCount() > 0;
+                System.out.println("✅ DAO: Update acknowledged by MongoDB");
+                System.out.println("   Matched count: " + result.getMatchedCount());
+                System.out.println("   Modified count: " + result.getModifiedCount());
+
+                return true;
             } else {
-                System.err.println("❌ DAO: Update not acknowledged");
+                System.err.println("❌ DAO: Update not acknowledged by MongoDB");
                 return false;
             }
 
@@ -146,7 +151,6 @@ public class MongoDBTaskDAO implements TaskDAO {
     @Override
     public boolean deleteById(String id) {
         try {
-            // 🔥 Aplicar WriteConcern DIRECTAMENT a l'operació
             DeleteResult result = collection
                     .withWriteConcern(WriteConcern.MAJORITY)
                     .deleteOne(Filters.eq("_id", id));
