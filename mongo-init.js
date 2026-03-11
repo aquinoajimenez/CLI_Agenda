@@ -1,22 +1,10 @@
-// === ESPERAR A QUE MONGODB ESTÉ LISTO ===
-sleep(5000); // Espera 5 segundos
+print("🚀 Iniciant inicialització de la base de dades...");
 
-// === AUTENTICACIÓN ===
-db = db.getSiblingDB('admin');
-var authResult = db.auth('root', 'rootpassword');
-print("Autenticación: " + (authResult ? "OK" : "FALLÓ"));
-
-if (!authResult) {
-  print("❌ No se pudo autenticar. Abortando inicialización.");
-  quit(1);
-}
-
+// Crear/Usar base de dades principal
 db = db.getSiblingDB('cli_agenda_db');
 
-db.dropDatabase();
-
 // ==========================================
-// COLECCIÓN TASKS
+// COLECCIÓ TASKS
 // ==========================================
 db.createCollection("tasks", {
   validator: {
@@ -59,7 +47,7 @@ db.tasks.insertOne({
 });
 
 // ==========================================
-// COLECCIÓN: NOTES
+// COLECCIÓ NOTES
 // ==========================================
 db.createCollection("notes", {
   validator: {
@@ -70,8 +58,8 @@ db.createCollection("notes", {
         title: { bsonType: "string", minLength: 1, description: "Mandatory note title" },
         content: { bsonType: "string", description: "Optional note content" },
         category: {
-          enum: ["TRABAJO", "UNIVERSIDAD", "SOCIAL"],
-          description: "Optional category (TRABAJO, UNIVERSIDAD, SOCIAL)"
+          enum: ["WORK", "UNIVERSITY", "SOCIAL"],
+          description: "Optional category (WORK, UNIVERSITY, SOCIAL)"
         },
         created_at: { bsonType: "date", description: "Mandatory creation date" },
         updated_at: { bsonType: "date", description: "Optional last update date" }
@@ -81,15 +69,15 @@ db.createCollection("notes", {
 });
 
 db.notes.insertOne({
-  title: "Ideas para el proyecto final",
-  content: "Recuerda aplicar el patrón DAO correctamente.",
-  category: "UNIVERSIDAD",
+  title: "Ideas for the final project",
+  content: "Remember to apply DAO pattern correctly.",
+  category: "UNIVERSITY",
   created_at: new Date(),
   updated_at: new Date()
 });
 
 // ==========================================
-// COLECCIÓN: EVENTS
+// COLECCIÓ EVENTS
 // ==========================================
 db.createCollection("events", {
   validator: {
@@ -110,8 +98,8 @@ db.createCollection("events", {
 });
 
 db.events.insertOne({
-  title: "Reunión de Sincronización (Daily)",
-  description: "Revisar los avances de la CLI Agenda con el equipo",
+  title: "Daily Sync Meeting",
+  description: "Review CLI Agenda progress with the team",
   start_date: new Date("2026-03-06T10:00:00Z"),
   end_date: new Date("2026-03-06T10:30:00Z"),
   location: "Discord",
@@ -120,17 +108,20 @@ db.events.insertOne({
 });
 
 db.events.insertOne({
-  title: "Cena con amigos",
-  description: "Cumpleaños sorpresa",
+  title: "Dinner with friends",
+  description: "Surprise birthday",
   start_date: new Date("2026-04-12T20:00:00Z"),
   end_date: new Date("2026-04-12T23:59:59Z"),
-  location: "Restaurante centro",
+  location: "Downtown restaurant",
   created_at: new Date(),
   updated_at: new Date()
 });
 
+// ==========================================
+// ÍNDEXS
+// ==========================================
 db.tasks.createIndex({ "status": 1 });
 db.events.createIndex({ "start_date": 1 });
 db.notes.createIndex({ "category": 1 });
 
-print("✅ Base de datos CLI-Agenda inicializada con éxito.");
+print("✅ Base de dades 'cli_agenda_db' inicialitzada correctament (sense autenticació).");
