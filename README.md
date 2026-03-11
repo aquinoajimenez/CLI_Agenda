@@ -127,6 +127,7 @@ agenda_cli/
     │				│   └── utils/
     │				├── tasks/
     │				│   ├── dto/
+    │				│   ├── dao/
     │				│   ├── exception/
     │				│   ├── mapper/
     │				│   ├── model/
@@ -204,18 +205,15 @@ updated_at (Date - optional)
 ## Patrons de disseny implementats
 
 1. **Singleton**: garanteix una única instància de la connexió a la base de dades.
-2. **Builder**: en classe Task, permet crear instàncies amb múltiples paràmetres opcionals i valors per defecte.
-3. **Repository**: en TaskRepository interface i MongoTaskRepository, abstreu la capa de persistència, permetent canviar 
-   la base de dades sense afectar la capa de servei.
+2. **Builder**: en classe Task, permet crear instàncies amb paràmetres opcionals i valors per defecte de manera fluïda.
+3. **Repository + DAO**: TaskRepository (interfície) defineix operacions amb entitats de domini, mentre TaskDAO 
+   (interfície) i MongoDBTaskDAO (implementació) gestionen l'accés a MongoDB, separant la lògica de negoci de la persistència.
 
 ---
-
 
 ## Tests realitzats
 
 _Pendent de desenvolupar_
-
-
 
 ---
 
