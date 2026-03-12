@@ -1,10 +1,9 @@
-print("🚀 Iniciant inicialització de la base de dades...");
-
-// Crear/Usar base de dades principal
 db = db.getSiblingDB('cli_agenda_db');
 
+db.dropDatabase();
+
 // ==========================================
-// COLECCIÓ TASKS
+// COLECCIÓN TASKS
 // ==========================================
 db.createCollection("tasks", {
   validator: {
@@ -47,7 +46,7 @@ db.tasks.insertOne({
 });
 
 // ==========================================
-// COLECCIÓ NOTES
+// COLECCIÓN: NOTES
 // ==========================================
 db.createCollection("notes", {
   validator: {
@@ -58,8 +57,8 @@ db.createCollection("notes", {
         title: { bsonType: "string", minLength: 1, description: "Mandatory note title" },
         content: { bsonType: "string", description: "Optional note content" },
         category: {
-          enum: ["WORK", "UNIVERSITY", "SOCIAL"],
-          description: "Optional category (WORK, UNIVERSITY, SOCIAL)"
+          enum: ["TRABAJO", "UNIVERSIDAD", "SOCIAL"],
+          description: "Optional category (TRABAJO, UNIVERSIDAD, SOCIAL)"
         },
         created_at: { bsonType: "date", description: "Mandatory creation date" },
         updated_at: { bsonType: "date", description: "Optional last update date" }
@@ -69,15 +68,15 @@ db.createCollection("notes", {
 });
 
 db.notes.insertOne({
-  title: "Ideas for the final project",
-  content: "Remember to apply DAO pattern correctly.",
-  category: "UNIVERSITY",
+  title: "Ideas para el proyecto final",
+  content: "Recuerda aplicar el patrón DAO correctamente.",
+  category: "UNIVERSIDAD",
   created_at: new Date(),
   updated_at: new Date()
 });
 
 // ==========================================
-// COLECCIÓ EVENTS
+// COLECCIÓN: EVENTS
 // ==========================================
 db.createCollection("events", {
   validator: {
@@ -98,8 +97,8 @@ db.createCollection("events", {
 });
 
 db.events.insertOne({
-  title: "Daily Sync Meeting",
-  description: "Review CLI Agenda progress with the team",
+  title: "Reunión de Sincronización (Daily)",
+  description: "Revisar los avances de la CLI Agenda con el equipo",
   start_date: new Date("2026-03-06T10:00:00Z"),
   end_date: new Date("2026-03-06T10:30:00Z"),
   location: "Discord",
@@ -108,20 +107,17 @@ db.events.insertOne({
 });
 
 db.events.insertOne({
-  title: "Dinner with friends",
-  description: "Surprise birthday",
+  title: "Cena con amigos",
+  description: "Cumpleaños sorpresa",
   start_date: new Date("2026-04-12T20:00:00Z"),
   end_date: new Date("2026-04-12T23:59:59Z"),
-  location: "Downtown restaurant",
+  location: "Restaurante centro",
   created_at: new Date(),
   updated_at: new Date()
 });
 
-// ==========================================
-// ÍNDEXS
-// ==========================================
 db.tasks.createIndex({ "status": 1 });
 db.events.createIndex({ "start_date": 1 });
 db.notes.createIndex({ "category": 1 });
 
-print("✅ Base de dades 'cli_agenda_db' inicialitzada correctament (sense autenticació).");
+print("✅ Base de datos CLI-Agenda inicializada con éxito.");
