@@ -36,17 +36,31 @@ public class EventMapper {
     }
 
     public static Event toEvent(Document document){
-        return new Event.Builder(
+        if(document == null) return null;
+
+        Event.Builder builder = new Event.Builder(
                 document.getString("title"),
                 parseLocalDateTime(document.getDate("start_date")),
                 parseLocalDateTime(document.getDate("end_date"))
-        )
-                .id(document.getObjectId("_id").toHexString())
-                .description(document.getString("description"))
-                .location(document.getString("location"))
-                .createdAt(parseLocalDateTime(document.getDate("created_at")))
-                .updatedAt(parseLocalDateTime(document.getDate("updated_at")))
-                .build();
+        );
+
+        ObjectId id = document.getObjectId("_id");
+        if(id != null){
+            builder.id(id.toHexString());
+        }
+        if(document.containsKey("description")){
+            builder.description(document.getString("description"));
+        }
+        if(document.containsKey("location")){
+            builder.location(document.getString("location"));
+        }
+
+        builder.createdAt(parseLocalDateTime(document.getDate("created_at")));
+
+        if(document.containsKey("updated_at")){
+            builder.updatedAt(parseLocalDateTime(document.getDate("updated_at")));
+        }
+        return builder.build();
     }
 
     private static Date parseDate(LocalDateTime localDateTime){
