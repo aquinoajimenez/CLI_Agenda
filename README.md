@@ -126,14 +126,16 @@ agenda_cli/
     │				│   ├── repository/
     │				│   └── utils/
     │				├── tasks/
-    │				│   ├── dto/
+    │				│   ├── cli/
     │				│   ├── dao/
-    │				│   ├── exception/
-    │				│   ├── mapper/
+    │				│   ├── database/
+    │				│   ├── dto/
+	│				│   ├── exception/
+	│				│   ├── factory/
+    │				│   ├── mapper/	
     │				│   ├── model/
     │				│   ├── repository/
-    │				│   ├── service/
-    │				│   └── cli/
+    │				│   └── service/
     │				├── notes/
     │				│   ├── dto/
     │				│   ├── exception/
@@ -162,15 +164,9 @@ agenda_cli/
         └── java/
             └── cli/
                 └── agenda/
+			├── events/
+			├── notes/
 			├── tasks/
-			│   ├── service/
-			│   └── repository/
-			├── notes/
-			│   └── service/
-			│   └── repository/
-			├── notes/
-			│   └── service/
-			│   └── repository/
 			└── common/
     				└── utils/
 
