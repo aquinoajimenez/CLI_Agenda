@@ -1,109 +1,108 @@
-# Títol del Projecte: CLI Agenda Java
+# Project Title: Java CLI Agenda
 
-Aplicació d'agenda per consola desenvolupada en Java 21 per a la gestió de tasques, esdeveniments 4
-i notes. El projecte implementa persistència en base de dades SQL, arquitectura per capes, 
-organització per funcionalitats, execució mitjançant Docker i testing amb JUnit 5.
+Console-based agenda application developed in Java 21 for managing tasks, events, and notes. 
+The project implements SQL database persistence, layered architecture, organization by 
+functionality, execution through Docker, and testing with JUnit 5.
 
-Projecte desenvolupat com a treball final en equip aplicant bones pràctiques de disseny, modularitat 
-i separació de responsabilitats.
+Project developed as a final team assignment applying good design practices, modularity, and 
+separation of concerns.
 
 ---
 
-## Funcionalitats
+## Features
 
-### Gestió de Tasques
-- Crear, actualitzar i eliminar tasques
-- Llistar totes les tasques
-- Llistar tasques pendents i completades
-- Marcar tasques com a completades
+### Task Management (Eduard Cantos)
+- Create, update, and delete tasks
+- List all tasks
+- List pending and completed tasks
+- Mark tasks as completed
 
-### Gestió d'Esdeveniments
-- Crear, llistar, actualitzar i eliminar esdeveniments
-- Llistar propers esdeveniments
+### Event Managements (Adrià Quiñoa)
+- Create, list, update, and delete events
+- List upcoming events
 
-### Gestió de Notes
-- Crear, llistar, actualitzar i eliminar notes
+### Note Managements (Marc Fabregat)
+- Create, list, update, and delete notes
 
 ### Característiques Tècniques
-- Arquitectura en capes
-- Organització per features (task, event, note)
-- Patró DAO (Data Access Object)
-- Ús de DTOs (Data Transfer Object) i Mappers
-- Gestió d'excepcions personalitzada
-- Aplicació CLI amb menús interactius
-- Base de dades en contenidor Docker
-- Scripts automàtics de creació i càrrega de dades
-- Persistència en base de dades SQL
-- Projecte gestionat amb Maven
+- Layered architecture
+- Feature-based organization (task, event, note)
+- DAO (Data Access Object) pattern
+- Use of DTOs (Data Transfer Object) and Mappers
+- Custom exception handling
+- CLI application with interactive menus
+- Database in Docker container
+- Automatic scripts for database creation and data loading
+- MongoDB database persistence
+- Maven-managed project
 
 ---
 
 ## Tecnologíes utilitzades
 
-|       Tecnologia       |           Ús          |
+|       Technology       |        Purpose        |
 | ---------------------- | --------------------- |
-| Java 21                | Lògica de negoci      |
-| Maven                  | Gestió del projecte   |
-| noSQL                  | Persistència de dades |
-| MongoDB    (en Docker) | Base de dades         |
-| Docker                 | Conteniderització     |
+| Java 21                | Business logic        |
+| Maven                  | Project management    |
+| noSQL                  | Data persistence      |
+| MongoDB (in Docker)    | Database              |
+| Docker                 | Containerization      |
 | JUnit 5                | Testing               |
 
 ---
 
-## Requisits Previs
+## Prerequisites
 
-Abans d'executar el projecte, assegura't de tenir instal·lat:
+Before running the project, make sure you have installed:
 
-- **Java 21** o superior
-- **Maven** (per a la gestió de dependències i compilació)
-- **Docker** i **Docker Compose** (per a la base de dades)
-- **Git** (per clonar el repositori)
+- **Java 21**
+- **Maven** (or dependency management and compilation)
+- **Docker** and **Docker Compose** (for the database)
+- **Git** (for cloning the repository)
 
 ---
 
-## Instruccions d'Instal·lació i Execució
+## Installation and Execution Instructions
 
-### 1. Clonar el repositori
+### 1. Clone the repository
 
 git clone https://github.com/aquinoajimenez/Project-Tasca-S3.04---Developers-Team.git
 
-### 2. Configurar la base de dades amb Docker
+### 2. Configure the database with Docker
 
-Configurar la infraestructura de MongoDB mitjançant Docker per garantir un entorn local 
-unificat sense instal·lacions manuals.
-- El fitxer docker-compose.yml aixeca un contenidor amb MongoDB 6.0.
-- L'script mongo-init.js inicialitza la base de dades automàticament al primer inici.
-- La col·lecció users es configura amb validació estricta d'esquema i índexs únics per a 
-email i username.
-- La col·lecció tasks inclou validació d'esquema, enums per a priority i status, i una 
-referència a l'usuari.
-- Es creen automàticament un usuari de prova (Juan Garcia) i una tasca simulada per a 
-proves locals.
+Set up the MongoDB infrastructure using Docker to ensure a unified local environment 
+without manual installations.
+- The docker-compose.yml file launches a container with MongoDB 6.0.
+- The mongo-init.js script automatically initializes the database on first startup.
+- The users collection is configured with strict schema validation and unique indexes for 
+	email and username.
+- The tasks collection includes schema validation, enums for priority and status, and a 
+	reference to the user.
+- A test user (Juan Garcia) and a simulated task are automatically created for local testing.
 
-Prova-ho localment:
-- Obrir la terminal a la carpeta arrel del projecte.
-- Executar docker compose up -d.
-- Verificar a Docker Desktop que el contenidor cli_agenda_mongo estigui en funcionament.
+Test it locally:
+- Open a terminal in the project root folder.
+- Run docker compose up -d.
+- Verify in Docker Desktop that the cli_agenda_mongo container is running.
 
-### 3. Compilar el projecte amb Maven
+### 3. Compile the project with Mave
 mvn clean compile
 
-### 4. Executar l'aplicació
+### 4. Run the application
 
 mvn exec:java
 
-### 5. Executar els tests
+### 5. Run the tests
 
 mvn test
 
-### 6. Aturar la base de dades
+### 6. Stop the database
 
 docker-compose down
 
 ---
 
-## Estructura del projecte
+## Project Structure
 
 agenda_cli/
 ├── gitignore
@@ -176,22 +175,23 @@ agenda_cli/
 
 ---
 
-### 6. Estructura de Coleccions
+### 6. Collection Structure
 
+**Collection Tasks**:
 text (String - required)
 due_date (Date - optional)
 priority (ENUM ["LOW", "MEDIUM", "HIGH"] - required)
 status (ENUM ["PENDING", "COMPLETED"] - required)
 created_at (Date - required)
-Colección Notes:
 
+**Collection Notes**:
 title (String - required)
 content (String - optional)
 category (ENUM ["TRABAJO", "UNIVERSIDAD", "SOCIAL"] - optional)
 created_at (Date - required)
 updated_at (Date - optional)
-Colección Events:
 
+**Collection Events**:
 title (String - required)
 description (String - optional)
 start_date (Date - required)
@@ -202,31 +202,35 @@ updated_at (Date - optional)
 
 ---
 
-## Patrons de disseny implementats
+## Design patterns implemented
 
-1. **Singleton**: garanteix una única instància de la connexió a la base de dades.
-2. **Builder**: en classe Task, permet crear instàncies amb paràmetres opcionals i valors per defecte de manera fluïda.
-3. **Repository + DAO**: TaskRepository (interfície) defineix operacions amb entitats de domini, mentre TaskDAO 
-   (interfície) i MongoDBTaskDAO (implementació) gestionen l'accés a MongoDB, separant la lògica de negoci de la persistència.
-
----
-
-## Tests realitzats
-
-_Pendent de desenvolupar_
+1. **Singleton**: ensures a single instance of the database connection.
+2. **Builder**: in the Task class, allows creating instances with optional parameters and default 
+   values in a fluent manner.
+3. **Repository + DAO**: `TaskRepository` (interface) defines operations with domain entities, 
+   while `TaskDAO` (interface) and `MongoDBTaskDAO` (implementation) manage access to MongoDB, 
+   separating business logic from persistence.
+4. **Factory Method**: `TaskServiceFactory` centralizes the creation of services and CLIs, 
+   reducing coupling and allowing the Main class to act as a simple orchestrator.
 
 ---
 
-## Autors
+## Tests performed
 
-Projecte desenvolupat per:
+Happy Path for each CRUD element.
 
-* Adrià Quiñoa Jiménez
-* Eduard Cantos Font
+---
+
+## Authors
+
+Project developed by:
+
+* Adrià Quiñoa
+* Eduard Cantos
 * Marc Fabregat
 
 ---
 
-## Llicència
+## License
 
-Aquest projecte **no disposa actualment de llícència definida**.
+This project **currently does not have a defined license**.
