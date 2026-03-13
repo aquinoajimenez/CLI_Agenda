@@ -6,6 +6,7 @@ import cli.agenda.tasks.cli.ListCompletedTasksCli;
 import cli.agenda.tasks.cli.ListAllTasksCli;
 import cli.agenda.tasks.cli.UpdateTaskCli;
 import cli.agenda.tasks.cli.DeleteTaskCli;
+import cli.agenda.tasks.cli.CompleteTaskCli;
 import cli.agenda.tasks.dao.mongodb.MongoDBTaskDAO;
 import cli.agenda.tasks.repository.impl.TaskRepositoryImpl;
 import cli.agenda.tasks.service.CreateTaskService;
@@ -14,6 +15,7 @@ import cli.agenda.tasks.service.ListCompletedTasksService;
 import cli.agenda.tasks.service.ListAllTasksService;
 import cli.agenda.tasks.service.UpdateTaskService;
 import cli.agenda.tasks.service.DeleteTaskService;
+import cli.agenda.tasks.service.CompleteTaskService;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
@@ -106,13 +108,17 @@ public class Main {
             var deleteTaskService = new DeleteTaskService(taskRepository);
             var deleteTaskCli = new DeleteTaskCli(deleteTaskService, scanner);
 
+            var completeTaskService = new CompleteTaskService(taskRepository);
+            var completeTaskCli = new CompleteTaskCli(completeTaskService, scanner);
+
             showMainMenu(scanner,
                     createTaskCli,
                     listPendingTasksCli,
                     listCompletedTasksCli,
                     listAllTasksCli,
                     updateTaskCli,
-                    deleteTaskCli);
+                    deleteTaskCli,
+                    completeTaskCli);
 
         } catch (Exception e) {
             System.err.println("❌ General error: " + e.getMessage());
@@ -126,7 +132,8 @@ public class Main {
                                      ListCompletedTasksCli listCompletedTasksCli,
                                      ListAllTasksCli listAllTasksCli,
                                      UpdateTaskCli updateTaskCli,
-                                     DeleteTaskCli deleteTaskCli) {
+                                     DeleteTaskCli deleteTaskCli,
+                                     CompleteTaskCli completeTaskCli) {
         while (true) {
             System.out.println("\n=== 📋 AGENDA CLI 📋 ===");
             System.out.println("1. ➕ Create task");
@@ -134,8 +141,9 @@ public class Main {
             System.out.println("3. ✅ List COMPLETED tasks");
             System.out.println("4. 📚 List ALL tasks");
             System.out.println("5. ✏️ Update task");
-            System.out.println("6. 🗑️ Delete task");
-            System.out.println("7. 🚪 Exit");
+            System.out.println("6. ✅ Mark task as COMPLETED");
+            System.out.println("7. 🗑️ Delete task");
+            System.out.println("8. 🚪 Exit");
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine().trim();
@@ -157,13 +165,16 @@ public class Main {
                     updateTaskCli.start();
                     break;
                 case "6":
-                    deleteTaskCli.start();
+                    completeTaskCli.start();  // 🔥 NOU
                     break;
                 case "7":
+                    deleteTaskCli.start();
+                    break;
+                case "8":
                     System.out.println("👋 Goodbye!");
                     return;
                 default:
-                    System.out.println("❌ Invalid option. Choose 1-7.");
+                    System.out.println("❌ Invalid option. Choose 1-8.");
             }
         }
     }
