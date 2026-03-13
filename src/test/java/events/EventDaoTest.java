@@ -1,5 +1,6 @@
 package events;
 
+<<<<<<< HEAD
 import cli.agenda.events.dao.MongoEventDAO;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -311,4 +312,8 @@ public class EventDaoTest {
                 )
         );
     }
+=======
+public class EventDaoTest {
+
+>>>>>>> 79c21c0 (feat: dependencies added in pom, added methods in eventdao interface, added methods not finished in mongoeventdao and class eventdaotest created)
 }
