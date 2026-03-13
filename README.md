@@ -75,10 +75,11 @@ without manual installations.
 - The docker-compose.yml file launches a container with MongoDB 6.0.
 - The mongo-init.js script automatically initializes the database on first startup.
 - The users collection is configured with strict schema validation and unique indexes for 
-	email and username.
+email and username.
 - The tasks collection includes schema validation, enums for priority and status, and a 
-	reference to the user.
-- A test user (Juan Garcia) and a simulated task are automatically created for local testing.
+reference to the user.
+- A test user (Juan Garcia) and a simulated task are automatically created for local 
+testing.
 
 Test it locally:
 - Open a terminal in the project root folder.
