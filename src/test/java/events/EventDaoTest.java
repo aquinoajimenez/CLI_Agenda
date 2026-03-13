@@ -1,6 +1,9 @@
 package events;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7b98e72 (feat: dao completed using factory pattern)
 import cli.agenda.events.dao.MongoEventDAO;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -312,8 +315,11 @@ public class EventDaoTest {
                 )
         );
     }
+<<<<<<< HEAD
 =======
 public class EventDaoTest {
 
 >>>>>>> 79c21c0 (feat: dependencies added in pom, added methods in eventdao interface, added methods not finished in mongoeventdao and class eventdaotest created)
+=======
+>>>>>>> 7b98e72 (feat: dao completed using factory pattern)
 }
