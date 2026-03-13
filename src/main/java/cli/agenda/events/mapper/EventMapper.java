@@ -18,7 +18,6 @@ public class EventMapper {
                 .append("end_date", parseDate(event.getEndDate()))
                 .append("created_at", parseDate(event.getCreatedAt()));
 
-
         if(event.getId() != null){
             document.append("_id", new ObjectId(event.getId()));
         }
