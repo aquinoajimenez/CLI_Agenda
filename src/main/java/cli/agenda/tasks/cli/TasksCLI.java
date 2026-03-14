@@ -1,12 +1,11 @@
-package cli.agenda;
+package cli.agenda.tasks.cli;
 
-import cli.agenda.tasks.cli.TasksMenuCli;
 import cli.agenda.tasks.database.TaskDatabaseManager;
 import cli.agenda.tasks.factory.TaskServiceFactory;
 
 import java.util.Scanner;
 
-public class Main {
+public class TasksCLI {
 
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
