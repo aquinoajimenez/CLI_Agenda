@@ -14,4 +14,6 @@ public interface NoteRepository {
 
     Note findById(String id);
 
+    void delete(String id);
+
 }

@@ -85,4 +85,9 @@ public class MongoNoteRepository implements NoteRepository {
 
         return findById(id);
     }
+
+    @Override
+    public void delete(String id) {
+        collection.deleteOne(new Document("_id", new ObjectId(id)));
+    }
 }
