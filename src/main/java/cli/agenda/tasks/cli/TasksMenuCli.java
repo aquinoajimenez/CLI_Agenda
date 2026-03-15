@@ -86,7 +86,7 @@ public class TasksMenuCli {
         System.out.println("5. ✏️ Update task");
         System.out.println("6. ✅ Mark task as COMPLETED");
         System.out.println("7. 🗑️ Delete task");
-        System.out.println("8. 🚪 Back to main menu");
+        System.out.println("0. 🔙 Back to main menu");
         System.out.print("Choose an option: ");
     }
 
@@ -113,11 +113,11 @@ public class TasksMenuCli {
             case "7":
                 deleteTaskCli.start();
                 return true;
-            case "8":
+            case "0":
                 System.out.println("🔙 Returning to main menu...");
                 return false;
             default:
-                System.out.println("❌ Invalid option. Choose 1-8.");
+                System.out.println("❌ Invalid option. Choose 0-7.");  // 🔥 CANVI: missatge actualitzat
                 return true;
         }
     }
