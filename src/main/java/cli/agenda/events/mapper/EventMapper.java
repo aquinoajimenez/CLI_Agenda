@@ -62,6 +62,31 @@ public class EventMapper {
         return builder.build();
     }
 
+    public static Event copyWithId(Event event, String id){
+        Event.Builder builder = new Event.Builder(
+                event.getTitle(),
+                event.getStartDate(),
+                event.getEndDate()
+        );
+
+        if(id != null){
+            builder.id(id);
+        }
+        if(event.getDescription() != null){
+            builder.description(event.getDescription());
+        }
+        if(event.getLocation() != null){
+            builder.location(event.getLocation());
+        }
+
+        builder.createdAt(event.getCreatedAt());
+
+        if(event.getUpdatedAt() != null){
+            builder.updatedAt(event.getUpdatedAt());
+        }
+        return builder.build();
+    }
+
     private static Date parseDate(LocalDateTime localDateTime){
         if(localDateTime == null){
             return null;
