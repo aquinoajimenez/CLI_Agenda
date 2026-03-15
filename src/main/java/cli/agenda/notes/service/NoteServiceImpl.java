@@ -37,15 +37,19 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public NoteResponseDTO update(String id, NoteCreateDTO dto) {
         Note updated = noteRepository.update(id, dto);
+        if (updated == null) return null;
         return NoteMapper.toResponseDTO(updated);
     }
 
     @Override
     public NoteResponseDTO findById(String id) {
         Note note = noteRepository.findById(id);
-        if (note == null) {
-            return null;
-        }
+        if (note == null) return null;
         return NoteMapper.toResponseDTO(note);
+    }
+
+    @Override
+    public void delete(String id) {
+        noteRepository.delete(id);
     }
 }

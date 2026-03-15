@@ -14,4 +14,6 @@ public interface NoteService {
     NoteResponseDTO update(String id, NoteCreateDTO dto);
 
     NoteResponseDTO findById(String id);
+
+    void delete(String id);
 }

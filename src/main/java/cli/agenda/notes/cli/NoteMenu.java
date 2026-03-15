@@ -19,22 +19,30 @@ public class NoteMenu {
     }
 
     public void show() {
-        System.out.println("\n===== NOTES MENU =====");
-        System.out.println("1. Create note");
-        System.out.println("2. List all notes");
-        System.out.println("3. Find note by ID");
-        System.out.println("4. Update note");
-        System.out.println("0. Exit");
-        System.out.print("Select: ");
-        String option = scanner.nextLine().trim();
+        boolean running = true;
+        while (running) {
+            System.out.println("\n===== NOTES MENU =====");
+            System.out.println("1. Create note");
+            System.out.println("2. List all notes");
+            System.out.println("3. Find note by ID");
+            System.out.println("4. Update note");
+            System.out.println("5. Delete note");
+            System.out.println("0. Exit");
+            System.out.print("Select: ");
+            String option = scanner.nextLine().trim();
 
-        switch (option) {
-            case "1" -> createNote();
-            case "2" -> listAllNotes();
-            case "3" -> findNoteById();
-            case "4" -> updateNote();
-            case "0" -> System.out.println("Goodbye!");
-            default -> System.out.println("Invalid option.");
+            switch (option) {
+                case "1" -> createNote();
+                case "2" -> listAllNotes();
+                case "3" -> findNoteById();
+                case "4" -> updateNote();
+                case "5" -> deleteNote();
+                case "0" -> {
+                    System.out.println("Goodbye!");
+                    running = false;
+                }
+                default -> System.out.println("Invalid option.");
+            }
         }
     }
 
@@ -129,5 +137,12 @@ public class NoteMenu {
         System.out.println("Title: " + response.getTitle());
         System.out.println("Content: " + response.getContent());
         System.out.println("Category: " + response.getCategory());
+    }
+
+    private void deleteNote() {
+        System.out.print("Enter note ID to delete: ");
+        String id = scanner.nextLine().trim();
+        noteService.delete(id);
+        System.out.println("Note deleted!");
     }
 }
