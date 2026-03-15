@@ -1,8 +1,11 @@
 package cli.agenda;
 
+import cli.agenda.events.dao.EventDaoFactory;
+import cli.agenda.events.repository.EventRepositoryImpl;
+import cli.agenda.events.service.EventServiceImpl;
 import cli.agenda.tasks.cli.TasksMenuCli;
 // import cli.agenda.notes.cli.NotesMenuCli;
-// import cli.agenda.events.cli.EventsMenuCli;
+import cli.agenda.events.cli.EventsMenuCli;
 
 import java.util.Scanner;
 
@@ -13,14 +16,14 @@ public class AgendaCLI {
 
             TasksMenuCli tasksMenu = new TasksMenuCli(scanner);
             // NotesMenuCli notesMenu = new NotesMenuCli(scanner);
-            // EventsMenuCli eventsMenu = new EventsMenuCli(scanner);
+            EventsMenuCli eventsMenu = new EventsMenuCli(new EventServiceImpl(new EventRepositoryImpl(EventDaoFactory.createMongoEventDao())),scanner);
 
             while (true) {
                 displayMainMenu();
 
                 String choice = scanner.nextLine().trim();
 
-                if (!processMainChoice(choice, tasksMenu, scanner)) {
+                if (!processMainChoice(choice, tasksMenu, eventsMenu,scanner)) {
                     break;
                 }
             }
@@ -44,6 +47,7 @@ public class AgendaCLI {
 
     private static boolean processMainChoice(String choice,
                                              TasksMenuCli tasksMenu,
+                                             EventsMenuCli eventsMenu,
                                              Scanner scanner) {
         switch (choice) {
             case "1":
@@ -54,7 +58,8 @@ public class AgendaCLI {
                 System.out.println("\n🔜 NOTES menu coming soon...");
                 return true;
             case "3":
-                System.out.println("\n🔜 EVENTS menu coming soon...");
+                System.out.println("\n🔜 Redirecting to EVENTS menu...");
+                eventsMenu.start();
                 return true;
             case "4":
                 System.out.println("\n👋 Thank you for using Personal CLI Agenda. Goodbye!");
