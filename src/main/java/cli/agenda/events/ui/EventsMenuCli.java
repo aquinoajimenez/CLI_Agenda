@@ -1,4 +1,4 @@
-package cli.agenda.events.cli;
+package cli.agenda.events.ui;
 
 import cli.agenda.events.dto.EventCreateDTO;
 import cli.agenda.events.dto.EventResponseDTO;
