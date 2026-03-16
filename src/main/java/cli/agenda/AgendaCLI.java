@@ -1,8 +1,12 @@
 package cli.agenda;
 
+import cli.agenda.events.dao.EventDaoFactory;
+import cli.agenda.events.repository.EventRepositoryImpl;
+import cli.agenda.events.service.EventServiceImpl;
+import cli.agenda.notes.service.NoteService;
 import cli.agenda.tasks.cli.TasksMenuCli;
-// import cli.agenda.notes.cli.NotesMenuCli;
-// import cli.agenda.events.cli.EventsMenuCli;
+import cli.agenda.notes.cli.NotesApp;
+import cli.agenda.events.ui.EventsMenuCli;
 
 import java.util.Scanner;
 
@@ -12,15 +16,15 @@ public class AgendaCLI {
         try (Scanner scanner = new Scanner(System.in)) {
 
             TasksMenuCli tasksMenu = new TasksMenuCli(scanner);
-            // NotesMenuCli notesMenu = new NotesMenuCli(scanner);
-            // EventsMenuCli eventsMenu = new EventsMenuCli(scanner);
+            NotesApp notesMenu = new NotesApp();
+            EventsMenuCli eventsMenu = new EventsMenuCli(new EventServiceImpl(new EventRepositoryImpl(EventDaoFactory.createMongoEventDao())),scanner);
 
             while (true) {
                 displayMainMenu();
 
                 String choice = scanner.nextLine().trim();
 
-                if (!processMainChoice(choice, tasksMenu, scanner)) {
+                if (!processMainChoice(choice, tasksMenu, notesMenu,eventsMenu,scanner)) {
                     break;
                 }
             }
@@ -44,6 +48,8 @@ public class AgendaCLI {
 
     private static boolean processMainChoice(String choice,
                                              TasksMenuCli tasksMenu,
+                                             NotesApp notesMenu,
+                                             EventsMenuCli eventsMenu,
                                              Scanner scanner) {
         switch (choice) {
             case "1":
@@ -52,9 +58,11 @@ public class AgendaCLI {
                 return true;
             case "2":
                 System.out.println("\n🔜 NOTES menu coming soon...");
+                notesMenu.start();
                 return true;
             case "3":
-                System.out.println("\n🔜 EVENTS menu coming soon...");
+                System.out.println("\n🔜 Redirecting to EVENTS menu...");
+                eventsMenu.start();
                 return true;
             case "4":
                 System.out.println("\n👋 Thank you for using Personal CLI Agenda. Goodbye!");
