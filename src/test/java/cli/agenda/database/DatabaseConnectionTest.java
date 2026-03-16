@@ -1,4 +1,4 @@
-package database;
+package cli.agenda.database;
 
 import cli.agenda.infrastructure.database.DatabaseConnection;
 import com.mongodb.client.MongoDatabase;
