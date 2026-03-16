@@ -5,7 +5,7 @@ import cli.agenda.events.repository.EventRepositoryImpl;
 import cli.agenda.events.service.EventServiceImpl;
 import cli.agenda.tasks.cli.TasksMenuCli;
 // import cli.agenda.notes.cli.NotesMenuCli;
-import cli.agenda.events.cli.EventsMenuCli;
+import cli.agenda.events.ui.EventsMenuCli;
 
 import java.util.Scanner;
 
